@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.description|truncatewords:155}}
+    {% else %}
+    Welcome to CRAFTOPIA where you can buys different items..
+    {% endif %}
+{% endblock %}
+{% block title %}
+    {% if category %}
+       {{ category.name}} - CRAFTOPIA
+    {% else %}
+       See our new colleections - CRAFTOPIA
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if category %}
+<div>
+    <div class="row my_row_class">
+        <div  class="mx-auto">
+        <p><a href="{% url 'shop:allProdCat' %} ">Our product collections..</a></p>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="mx-auto">
+    {% if category %}
+        <img class="my_image"  src="{{category.image.url}}" alt="{{category.name}}" >
+</div>
+   <br>
+<div>
+        <h1 class="text-center my_title">{{category.name}}</h1>
+        <p class="text-justify">{{category.description}}</p>
+</div>
+    {% else %}
+<div>
+    <img style="filter: drop-shadow(20px 20px 10px black);" src="{% static 'img/banner.jpg' %}">
+    </div>
+<br><br><br>
+<div>
+    <h1 class=" my_title"><b>Our product collections</b></h1><br>
+         <p class="text-justify" style="font-size:15px;font-family:Times New Roman;">A craft or trade is a pastime or an occupation that requires particular skills and knowledge of skilled
+            work.In a historical sense, particularly the Middle Ages and earlier,the term is usually applied to people occupied
+            in small scale production of goods, or their maintenance, for example by tinkers.Home Crafts means a business carried
+            on as a home occupation use within a residence in which articles are made by hand, including jewelry, dolls, woodcrafts,
+            stuffed animals, seasonal art, toys, greeting cards, candles, soap, flower arrangements, clothing and fabric art.</p>
+</div>
+{% endif %}
+<div class="container">
+   <div class="row mx-auto">
+    {% for product in products.object_list %}
+    <div  class="my_bottom_margin col-9 col-sm-12 col-md-4  col-lg-4"><br>
+<div class="card text-center" style="min-width:18rem;" >
+            <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}" style="background-color: black;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"></a>
+            <div class="card-body">
+                <h4 >{{product.name}}</h4>
+                   <p>$ {{product.price}}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+<hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+        {% endfor %}
+    </div>
+        {% endif %}
+    <br>
+
+</div>
+</div>
+
+{% endblock %}
+
+
+
